@@ -72,6 +72,10 @@ class Custom_Under_Construction
 
         // Añadir indicador en la barra de admin cuando el modo está activo
         add_action('admin_bar_menu', array($this, 'add_admin_bar_indicator'), 100);
+
+        // Hooks para import/export
+        add_action('admin_init', array($this, 'handle_export'));
+        add_action('admin_init', array($this, 'handle_import'));
     }
 
     /**
@@ -471,6 +475,69 @@ p {
             .cuc-sponsor-btn svg {
                 fill: currentColor;
             }
+            
+            .cuc-backup-section {
+                margin-top: 30px;
+                padding: 20px;
+                background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+                border-radius: 8px;
+                border: 1px solid #90caf9;
+            }
+            
+            .cuc-backup-section h2 {
+                margin-top: 0;
+                color: #1565c0;
+            }
+            
+            .cuc-backup-actions {
+                display: flex;
+                gap: 20px;
+                flex-wrap: wrap;
+                margin-top: 15px;
+            }
+            
+            .cuc-backup-box {
+                flex: 1;
+                min-width: 250px;
+                padding: 15px;
+                background: #fff;
+                border-radius: 6px;
+                border: 1px solid #e0e0e0;
+            }
+            
+            .cuc-backup-box h3 {
+                margin-top: 0;
+                font-size: 14px;
+                color: #333;
+            }
+            
+            .cuc-backup-box p {
+                font-size: 13px;
+                color: #666;
+                margin-bottom: 10px;
+            }
+            
+            .cuc-export-btn {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                background: #1976d2;
+                color: #fff !important;
+                padding: 8px 16px;
+                border-radius: 4px;
+                text-decoration: none !important;
+                font-weight: 500;
+                transition: all 0.2s ease;
+            }
+            
+            .cuc-export-btn:hover {
+                background: #1565c0;
+                color: #fff !important;
+            }
+            
+            .cuc-import-input {
+                margin-bottom: 10px;
+            }
         ');
     }
 
@@ -511,17 +578,52 @@ p {
 
             <div class="cuc-sponsor-section">
                 <h2><?php esc_html_e('💖 Apoya este Plugin', 'custom-under-construction'); ?></h2>
-                <p><?php esc_html_e('¡Hola! Soy el desarrollador de wp-underconstruction. Dedico gran parte de mi tiempo libre a mantener este plugin gratuito, seguro y actualizado para que tu sitio web en WordPress funcione sin problemas.', 'custom-under-construction'); ?></p>
-                <p><?php esc_html_e('Al apoyarme a través de GitHub Sponsors, me ayudas a cubrir los costes de desarrollo y a dedicar más horas a implementar nuevas funcionalidades. Tu soporte garantiza que este proyecto siga siendo gratuito y de código abierto para todos.', 'custom-under-construction'); ?></p>
-                <a href="https://github.com/sponsors/slider66" target="_blank" rel="noopener noreferrer" class="cuc-sponsor-btn">
+                <p><?php esc_html_e('¡Hola! Soy el desarrollador de wp-underconstruction. Dedico gran parte de mi tiempo libre a mantener este plugin gratuito, seguro y actualizado para que tu sitio web en WordPress funcione sin problemas.', 'custom-under-construction'); ?>
+                </p>
+                <p><?php esc_html_e('Al apoyarme a través de GitHub Sponsors, me ayudas a cubrir los costes de desarrollo y a dedicar más horas a implementar nuevas funcionalidades. Tu soporte garantiza que este proyecto siga siendo gratuito y de código abierto para todos.', 'custom-under-construction'); ?>
+                </p>
+                <a href="https://github.com/sponsors/slider66" target="_blank" rel="noopener noreferrer"
+                    class="cuc-sponsor-btn">
                     <svg height="16" width="16" viewBox="0 0 16 16" version="1.1" aria-hidden="true">
-                        <path fill-rule="evenodd" d="M4.25 2.5c-1.336 0-2.75 1.164-2.75 3 0 2.15 1.58 4.144 3.365 5.682A20.565 20.565 0 008 13.393a20.561 20.561 0 003.135-2.211C12.92 9.644 14.5 7.65 14.5 5.5c0-1.836-1.414-3-2.75-3-1.373 0-2.609.986-3.029 2.456a.75.75 0 01-1.442 0C6.859 3.486 5.623 2.5 4.25 2.5zM8 14.25l-.345.666-.002-.001-.006-.003-.018-.01a7.643 7.643 0 01-.31-.17 22.075 22.075 0 01-3.434-2.414C2.045 10.731 0 8.35 0 5.5 0 2.836 2.086 1 4.25 1 5.797 1 7.153 1.802 8 3.02 8.847 1.802 10.203 1 11.75 1 13.914 1 16 2.836 16 5.5c0 2.85-2.045 5.231-3.885 6.818a22.08 22.08 0 01-3.744 2.584l-.018.01-.006.003h-.002L8 14.25zm0 0l.345.666a.752.752 0 01-.69 0L8 14.25z"></path>
+                        <path fill-rule="evenodd"
+                            d="M4.25 2.5c-1.336 0-2.75 1.164-2.75 3 0 2.15 1.58 4.144 3.365 5.682A20.565 20.565 0 008 13.393a20.561 20.561 0 003.135-2.211C12.92 9.644 14.5 7.65 14.5 5.5c0-1.836-1.414-3-2.75-3-1.373 0-2.609.986-3.029 2.456a.75.75 0 01-1.442 0C6.859 3.486 5.623 2.5 4.25 2.5zM8 14.25l-.345.666-.002-.001-.006-.003-.018-.01a7.643 7.643 0 01-.31-.17 22.075 22.075 0 01-3.434-2.414C2.045 10.731 0 8.35 0 5.5 0 2.836 2.086 1 4.25 1 5.797 1 7.153 1.802 8 3.02 8.847 1.802 10.203 1 11.75 1 13.914 1 16 2.836 16 5.5c0 2.85-2.045 5.231-3.885 6.818a22.08 22.08 0 01-3.744 2.584l-.018.01-.006.003h-.002L8 14.25zm0 0l.345.666a.752.752 0 01-.69 0L8 14.25z">
+                        </path>
                     </svg>
                     <?php esc_html_e('Sponsor en GitHub', 'custom-under-construction'); ?>
                 </a>
             </div>
-        </div>
-        <?php
+        <div class="cuc-backup-section">
+                        <h2><?php esc_html_e('💾 Backup / Restaurar Configuración', 'custom-under-construction'); ?></h2>
+                        <p><?php esc_html_e('Exporta tu configuración para guardarla como backup o impórtala desde un archivo JSON.', 'custom-under-construction'); ?></p>
+                
+                        <?php settings_errors('cuc_import'); ?>
+                
+                        <div class="cuc-backup-actions">
+                            <div class="cuc-backup-box">
+                                <h3><?php esc_html_e('📤 Exportar Configuración', 'custom-under-construction'); ?></h3>
+                                <p><?php esc_html_e('Descarga un archivo JSON con toda tu configuración actual.', 'custom-under-construction'); ?></p>
+                                <a href="<?php echo esc_url(wp_nonce_url(admin_url('options-general.php?page=custom-under-construction&cuc_export=1'), 'cuc_export_nonce')); ?>" 
+                                   class="cuc-export-btn">
+                                    <?php esc_html_e('⬇️ Descargar Backup', 'custom-under-construction'); ?>
+                                </a>
+                            </div>
+                    
+                            <div class="cuc-backup-box">
+                                <h3><?php esc_html_e('📥 Importar Configuración', 'custom-under-construction'); ?></h3>
+                                <p><?php esc_html_e('Restaura tu configuración desde un archivo de backup.', 'custom-under-construction'); ?></p>
+                                <form method="post" enctype="multipart/form-data">
+                                    <?php wp_nonce_field('cuc_import_nonce'); ?>
+                                    <input type="hidden" name="cuc_import" value="1">
+                                    <input type="file" name="cuc_import_file" accept=".json" class="cuc-import-input" required>
+                                    <button type="submit" class="button button-secondary">
+                                        <?php esc_html_e('⬆️ Importar Backup', 'custom-under-construction'); ?>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <?php
     }
 
     /**
@@ -663,6 +765,169 @@ p {
                 'title' => __('Haga clic para gestionar el modo mantenimiento', 'custom-under-construction'),
             ),
         ));
+    }
+
+    /**
+     * ==========================================================================
+     * IMPORT/EXPORT - Backup de Configuración
+     * ==========================================================================
+     */
+
+    /**
+     * Manejar la exportación de configuración
+     */
+    public function handle_export()
+    {
+        // Verificar si es una petición de exportación
+        if (!isset($_GET['cuc_export']) || $_GET['cuc_export'] !== '1') {
+            return;
+        }
+
+        // Verificar nonce
+        if (!isset($_GET['_wpnonce']) || !wp_verify_nonce($_GET['_wpnonce'], 'cuc_export_nonce')) {
+            wp_die(esc_html__('Error de seguridad. Por favor, recarga la página e inténtalo de nuevo.', 'custom-under-construction'));
+        }
+
+        // Verificar permisos
+        if (!current_user_can('manage_options')) {
+            wp_die(esc_html__('No tienes permisos para realizar esta acción.', 'custom-under-construction'));
+        }
+
+        // Obtener opciones
+        $options = get_option(CUC_OPTION_NAME, $this->get_default_options());
+
+        // Preparar datos para exportar
+        $export_data = array(
+            'plugin' => 'wp-underconstruction',
+            'version' => CUC_PLUGIN_VERSION,
+            'exported_at' => current_time('mysql'),
+            'settings' => $options,
+        );
+
+        // Generar nombre de archivo
+        $filename = 'wp-underconstruction-backup-' . date('Y-m-d-His') . '.json';
+
+        // Enviar cabeceras
+        header('Content-Type: application/json');
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
+        header('Cache-Control: no-cache, no-store, must-revalidate');
+        header('Pragma: no-cache');
+        header('Expires: 0');
+
+        // Enviar contenido
+        echo wp_json_encode($export_data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        exit;
+    }
+
+    /**
+     * Manejar la importación de configuración
+     */
+    public function handle_import()
+    {
+        // Verificar si es una petición de importación
+        if (!isset($_POST['cuc_import']) || $_POST['cuc_import'] !== '1') {
+            return;
+        }
+
+        // Verificar nonce
+        if (!isset($_POST['_wpnonce']) || !wp_verify_nonce($_POST['_wpnonce'], 'cuc_import_nonce')) {
+            add_settings_error(
+                'cuc_import',
+                'cuc_import_error',
+                __('Error de seguridad. Por favor, recarga la página e inténtalo de nuevo.', 'custom-under-construction'),
+                'error'
+            );
+            return;
+        }
+
+        // Verificar permisos
+        if (!current_user_can('manage_options')) {
+            add_settings_error(
+                'cuc_import',
+                'cuc_import_error',
+                __('No tienes permisos para realizar esta acción.', 'custom-under-construction'),
+                'error'
+            );
+            return;
+        }
+
+        // Verificar archivo subido
+        if (!isset($_FILES['cuc_import_file']) || $_FILES['cuc_import_file']['error'] !== UPLOAD_ERR_OK) {
+            add_settings_error(
+                'cuc_import',
+                'cuc_import_error',
+                __('Error al subir el archivo. Por favor, selecciona un archivo válido.', 'custom-under-construction'),
+                'error'
+            );
+            return;
+        }
+
+        // Verificar extensión
+        $file_info = pathinfo($_FILES['cuc_import_file']['name']);
+        if (strtolower($file_info['extension']) !== 'json') {
+            add_settings_error(
+                'cuc_import',
+                'cuc_import_error',
+                __('El archivo debe ser un archivo JSON válido.', 'custom-under-construction'),
+                'error'
+            );
+            return;
+        }
+
+        // Leer contenido del archivo
+        $file_content = file_get_contents($_FILES['cuc_import_file']['tmp_name']);
+        $import_data = json_decode($file_content, true);
+
+        // Verificar JSON válido
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            add_settings_error(
+                'cuc_import',
+                'cuc_import_error',
+                __('El archivo JSON no es válido o está corrupto.', 'custom-under-construction'),
+                'error'
+            );
+            return;
+        }
+
+        // Verificar que sea un backup de este plugin
+        if (!isset($import_data['plugin']) || $import_data['plugin'] !== 'wp-underconstruction') {
+            add_settings_error(
+                'cuc_import',
+                'cuc_import_error',
+                __('El archivo no es un backup válido de WP Under Construction.', 'custom-under-construction'),
+                'error'
+            );
+            return;
+        }
+
+        // Verificar que tenga settings
+        if (!isset($import_data['settings']) || !is_array($import_data['settings'])) {
+            add_settings_error(
+                'cuc_import',
+                'cuc_import_error',
+                __('El archivo de backup no contiene configuración válida.', 'custom-under-construction'),
+                'error'
+            );
+            return;
+        }
+
+        // Sanitizar e importar configuración
+        $sanitized_settings = $this->sanitize_settings($import_data['settings']);
+        update_option(CUC_OPTION_NAME, $sanitized_settings);
+
+        // Actualizar opciones en memoria
+        $this->options = $sanitized_settings;
+
+        // Mensaje de éxito
+        add_settings_error(
+            'cuc_import',
+            'cuc_import_success',
+            sprintf(
+                __('✅ Configuración importada correctamente. Backup creado el: %s', 'custom-under-construction'),
+                isset($import_data['exported_at']) ? $import_data['exported_at'] : __('Fecha desconocida', 'custom-under-construction')
+            ),
+            'success'
+        );
     }
 }
 
