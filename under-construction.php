@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Custom Under Construction
+ * Plugin Name: WP Under Construction
  * Plugin URI: https://github.com/slider66/wp-underconstruction
  * Description: Plugin ligero para mostrar una pantalla de mantenimiento personalizada con HTML/CSS propio.
  * Version: 1.0.0
