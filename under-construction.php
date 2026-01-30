@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Custom Under Construction
- * Plugin URI: https://bloqes.com
+ * Plugin URI: https://github.com/slider66/wp-underconstruction
  * Description: Plugin ligero para mostrar una pantalla de mantenimiento personalizada con HTML/CSS propio.
  * Version: 1.0.0
  * Author: Bloqes
@@ -592,38 +592,41 @@ p {
                     <?php esc_html_e('Sponsor en GitHub', 'custom-under-construction'); ?>
                 </a>
             </div>
-        <div class="cuc-backup-section">
-                        <h2><?php esc_html_e('💾 Backup / Restaurar Configuración', 'custom-under-construction'); ?></h2>
-                        <p><?php esc_html_e('Exporta tu configuración para guardarla como backup o impórtala desde un archivo JSON.', 'custom-under-construction'); ?></p>
-                
-                        <?php settings_errors('cuc_import'); ?>
-                
-                        <div class="cuc-backup-actions">
-                            <div class="cuc-backup-box">
-                                <h3><?php esc_html_e('📤 Exportar Configuración', 'custom-under-construction'); ?></h3>
-                                <p><?php esc_html_e('Descarga un archivo JSON con toda tu configuración actual.', 'custom-under-construction'); ?></p>
-                                <a href="<?php echo esc_url(wp_nonce_url(admin_url('options-general.php?page=custom-under-construction&cuc_export=1'), 'cuc_export_nonce')); ?>" 
-                                   class="cuc-export-btn">
-                                    <?php esc_html_e('⬇️ Descargar Backup', 'custom-under-construction'); ?>
-                                </a>
-                            </div>
-                    
-                            <div class="cuc-backup-box">
-                                <h3><?php esc_html_e('📥 Importar Configuración', 'custom-under-construction'); ?></h3>
-                                <p><?php esc_html_e('Restaura tu configuración desde un archivo de backup.', 'custom-under-construction'); ?></p>
-                                <form method="post" enctype="multipart/form-data">
-                                    <?php wp_nonce_field('cuc_import_nonce'); ?>
-                                    <input type="hidden" name="cuc_import" value="1">
-                                    <input type="file" name="cuc_import_file" accept=".json" class="cuc-import-input" required>
-                                    <button type="submit" class="button button-secondary">
-                                        <?php esc_html_e('⬆️ Importar Backup', 'custom-under-construction'); ?>
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
+            <div class="cuc-backup-section">
+                <h2><?php esc_html_e('💾 Backup / Restaurar Configuración', 'custom-under-construction'); ?></h2>
+                <p><?php esc_html_e('Exporta tu configuración para guardarla como backup o impórtala desde un archivo JSON.', 'custom-under-construction'); ?>
+                </p>
+
+                <?php settings_errors('cuc_import'); ?>
+
+                <div class="cuc-backup-actions">
+                    <div class="cuc-backup-box">
+                        <h3><?php esc_html_e('📤 Exportar Configuración', 'custom-under-construction'); ?></h3>
+                        <p><?php esc_html_e('Descarga un archivo JSON con toda tu configuración actual.', 'custom-under-construction'); ?>
+                        </p>
+                        <a href="<?php echo esc_url(wp_nonce_url(admin_url('options-general.php?page=custom-under-construction&cuc_export=1'), 'cuc_export_nonce')); ?>"
+                            class="cuc-export-btn">
+                            <?php esc_html_e('⬇️ Descargar Backup', 'custom-under-construction'); ?>
+                        </a>
+                    </div>
+
+                    <div class="cuc-backup-box">
+                        <h3><?php esc_html_e('📥 Importar Configuración', 'custom-under-construction'); ?></h3>
+                        <p><?php esc_html_e('Restaura tu configuración desde un archivo de backup.', 'custom-under-construction'); ?>
+                        </p>
+                        <form method="post" enctype="multipart/form-data">
+                            <?php wp_nonce_field('cuc_import_nonce'); ?>
+                            <input type="hidden" name="cuc_import" value="1">
+                            <input type="file" name="cuc_import_file" accept=".json" class="cuc-import-input" required>
+                            <button type="submit" class="button button-secondary">
+                                <?php esc_html_e('⬆️ Importar Backup', 'custom-under-construction'); ?>
+                            </button>
+                        </form>
                     </div>
                 </div>
-                <?php
+            </div>
+        </div>
+        <?php
     }
 
     /**
