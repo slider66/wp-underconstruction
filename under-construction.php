@@ -4,8 +4,8 @@
  * Plugin URI: https://github.com/slider66/wp-underconstruction
  * Description: Plugin ligero para mostrar una pantalla de mantenimiento personalizada con HTML/CSS propio.
  * Version: 1.0.0
- * Author: Bloqes
- * Author URI: https://bloqes.com
+ * Author: Alex Merle
+ * Author URI: https://alexmerle.es
  * License: GPL v2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: custom-under-construction
