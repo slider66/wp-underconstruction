@@ -1,4 +1,4 @@
-=== Under Construction Page ===
+=== Starter Maintenance Mode ===
 Contributors: slider66
 Donate link: https://github.com/sponsors/slider66
 Tags: maintenance, coming soon, under construction, maintenance mode, landing page
